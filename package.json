@@ -1,0 +1,27 @@
+{
+  "name": "rxsocket",
+  "version": "1.0.0",
+  "description": "RxJS-based interface for websockets and other asynchronous communication",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/fsufitch/rxsocket.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/fsufitch/rxsocket/issues"
+  },
+  "homepage": "https://github.com/fsufitch/rxsocket#readme",
+  "dependencies": {
+    "rxjs": "^5.0.0-beta.12",
+    "ws": "^1.1.1"
+  },
+  "devDependencies": {
+    "@types/node": "^6.0.41",
+    "@types/ws": "0.0.33"
+  }
+}
