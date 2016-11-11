@@ -4,8 +4,8 @@ import { Observable, Observer, Subject } from 'rxjs/Rx';
 
 export class RxWebSocket<T> {
   private socket: WebSocket;
-  private outgoing$ = new Subject<T>();
-  private incoming$ = new Subject<T>();
+  private _outgoing$ = new Subject<T>();
+  private _incoming$ = new Subject<T>();
 
   public serialize = (data: T) => JSON.stringify(data);
   public deserialize = (data: string) => <T>JSON.parse(data);
@@ -16,7 +16,7 @@ export class RxWebSocket<T> {
     this.socket.onerror = (evt) => this.error(evt);
     this.socket.onclose = (evt) => this.close(evt);
 
-    this.outgoing$.map(data => this.serialize(data)).subscribe(
+    this._outgoing$.map(data => this.serialize(data)).subscribe(
       msg => this.send(msg),
       (err) => console.log("Error in outgoing data", err),
       () => this.socket.close()
@@ -25,23 +25,27 @@ export class RxWebSocket<T> {
 
   private receive(evt: {data: string}) {
     let deserialized = this.deserialize(<string>evt.data);
-    this.incoming$.next(deserialized);
+    this._incoming$.next(deserialized);
   }
 
   private error(evt: Error) {
-    this.incoming$.error(evt);
+    this._incoming$.error(evt);
   }
 
   private close(evt: {wasClean: boolean, code: number, reason: string}) {
-    this.incoming$.complete();
+    this._incoming$.complete();
   }
 
   private send(message: string) {
     this.socket.send(message);
   }
 
-  get streams(): [Observable<T>, Observer<T>] {
-    return [this.incoming$, this.outgoing$];
+  get incoming(): Observable<T> {
+    return this._incoming$.share();
+  }
+
+  get outgoing(): Observer<T> {
+    return this._outgoing$;
   }
 
 }
