@@ -1,5 +1,7 @@
 "use strict";
-var WebSocket = require("ws");
+if (typeof WebSocket === 'undefined') {
+    WebSocket = require('ws');
+}
 var Rx_1 = require("rxjs/Rx");
 var RxWebSocket = (function () {
     function RxWebSocket(addr, protocols) {

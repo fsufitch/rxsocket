@@ -1,4 +1,6 @@
-import WebSocket = require('ws');
+if (typeof WebSocket === 'undefined') {
+  WebSocket = require('ws');
+}
 
 import { Observable, Observer, Subject } from 'rxjs/Rx';
 
@@ -28,7 +30,7 @@ export class RxWebSocket<T> {
     this._incoming$.next(deserialized);
   }
 
-  private error(evt: Error) {
+  private error(evt: ErrorEvent) {
     this._incoming$.error(evt);
   }
 
