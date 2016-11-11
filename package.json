@@ -3,6 +3,7 @@
   "version": "1.0.2",
   "description": "RxJS-based interface for websockets and other asynchronous communication",
   "main": "index.js",
+  "types": "dist/index.d.ts",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
