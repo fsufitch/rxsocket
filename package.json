@@ -1,6 +1,6 @@
 {
   "name": "rxsocket",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "RxJS-based interface for websockets and other asynchronous communication",
   "main": "index.js",
   "scripts": {
