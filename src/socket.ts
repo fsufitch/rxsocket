@@ -43,7 +43,7 @@ export class RxWebSocket<T> {
   }
 
   get incoming(): Observable<T> {
-    return this._incoming$.share();
+    return this._incoming$;
   }
 
   get outgoing(): Observer<T> {

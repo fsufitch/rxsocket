@@ -31,7 +31,7 @@ var RxWebSocket = (function () {
     };
     Object.defineProperty(RxWebSocket.prototype, "incoming", {
         get: function () {
-            return this._incoming$.share();
+            return this._incoming$;
         },
         enumerable: true,
         configurable: true
