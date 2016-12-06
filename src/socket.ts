@@ -8,6 +8,7 @@ export class RxWebSocket<T> {
   private socket: WebSocket;
   private _outgoing$ = new Subject<T>();
   private _incoming$ = new Subject<T>();
+  private _open$ = new Subject<boolean>();
 
   public serialize = (data: T) => JSON.stringify(data);
   public deserialize = (data: string) => <T>JSON.parse(data);
@@ -17,6 +18,7 @@ export class RxWebSocket<T> {
     this.socket.onmessage = (evt) => this.receive(evt);
     this.socket.onerror = (evt) => this.error(evt);
     this.socket.onclose = (evt) => this.close(evt);
+    this.socket.onopen = () => this._open$.next(true);
 
     this._outgoing$.map(data => this.serialize(data)).subscribe(
       msg => this.send(msg),
@@ -40,6 +42,10 @@ export class RxWebSocket<T> {
 
   private send(message: string) {
     this.socket.send(message);
+  }
+
+  get open(): Observable<boolean> {
+    return this._open$;
   }
 
   get incoming(): Observable<T> {

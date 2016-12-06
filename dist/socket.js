@@ -8,12 +8,14 @@ var RxWebSocket = (function () {
         var _this = this;
         this._outgoing$ = new Rx_1.Subject();
         this._incoming$ = new Rx_1.Subject();
+        this._open$ = new Rx_1.Subject();
         this.serialize = function (data) { return JSON.stringify(data); };
         this.deserialize = function (data) { return JSON.parse(data); };
         this.socket = new WebSocket(addr, protocols);
         this.socket.onmessage = function (evt) { return _this.receive(evt); };
         this.socket.onerror = function (evt) { return _this.error(evt); };
         this.socket.onclose = function (evt) { return _this.close(evt); };
+        this.socket.onopen = function () { return _this._open$.next(true); };
         this._outgoing$.map(function (data) { return _this.serialize(data); }).subscribe(function (msg) { return _this.send(msg); }, function (err) { return console.log("Error in outgoing data", err); }, function () { return _this.socket.close(); });
     }
     RxWebSocket.prototype.receive = function (evt) {
@@ -29,6 +31,13 @@ var RxWebSocket = (function () {
     RxWebSocket.prototype.send = function (message) {
         this.socket.send(message);
     };
+    Object.defineProperty(RxWebSocket.prototype, "open", {
+        get: function () {
+            return this._open$;
+        },
+        enumerable: true,
+        configurable: true
+    });
     Object.defineProperty(RxWebSocket.prototype, "incoming", {
         get: function () {
             return this._incoming$;
